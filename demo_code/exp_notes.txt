@@ -1,0 +1,53 @@
+Initialize Node
+	npm init -y
+
+Install packages
+	express
+	nodemon
+		npm install -D nodemon
+
+Create app.js
+	import express
+	use express to create app object
+
+Create a server
+	app.listen()
+
+
+End points
+	methods take in...
+		Path/URL, callback function from which to send a response
+	end point methods
+		get
+		post
+		put/patch
+		delete
+		all
+		use
+	path of request
+		string
+		array of strings
+		Regular Expressions
+			array of regular expressions
+	response methods
+		send - plain text, OR if passed an array/object will respond with JSON
+		json - always responds with JSON
+			redirect - navigate the user to a new page
+			render - server side rendering
+		status - defines status of the response
+
+Boiler plate code for request bodies
+	app.use(express.json())
+	extra - app.use(express.urlencoded()) will parse form request bodies
+
+Taking in data from the client
+	req.body 
+		common with post/put requests, requires global parsing middleware
+	req.params
+		dynamic route parameters, useful for resource ids in particular
+			/stuff/:id // request: /stuff/1
+			req.params = {id: 1}
+	req.query
+		query strings often used for search features
+			/stuff?propertyOne=a&propertyTwo=b
+			req.query = {propertyOne: a, propertyTwo: b}
