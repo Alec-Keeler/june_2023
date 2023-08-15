@@ -2,11 +2,11 @@ const express = require('express');
 const app = express();
 
 // First
-app.use('/', (req, res, next) => {
-  console.log('First');
-  const error = new Error('First');
-  next(error);
-});
+// app.use('/', (req, res, next) => {
+//   console.log('First');
+//   const error = new Error('First');
+//   next(error);
+// });
 
 // Second
 app.use((req, res, next) => {
@@ -27,6 +27,7 @@ const fourth = (req, res, next) => {
   console.log('Fourth');
   const error = new Error('Fourth');
   throw error;
+  // next(error)
 };
 
 // Fifth
