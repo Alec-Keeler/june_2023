@@ -1,0 +1,52 @@
+Boardgames database
+
+
+reviews
+	rating
+	complexity
+	content
+		user
+	likes
+	posted_at
+
+users
+	age/birthdate
+	username
+	password
+		reviews?
+	email
+	favorite_game
+
+games
+	name [NOT NULL] UNIQUE 
+	player count - "1-4" / 4
+		max_players, min_players NOT NULL
+	category/genre - Strategy, Euro, Coop - NOT NULL DEFAULT 'other'
+	cost NOT NULL
+	average play time
+	target age NOT NULL
+
+	type - card/dice etc
+	available?
+	publisher/developer
+
+Datatypes
+	integer
+	booleans 0/1
+	varchar(maxChar)
+	text
+		blob
+	timestamps
+	decimal(scale, precision)(4,2) 456.7
+		numeric, float
+
+Other rules
+	NOT NULL
+	AUTOINCREMENT/PRIMARY KEY
+	DEFAULT
+	UNIQUE
+
+Queries
+SELECT
+FROM
+WHERE
