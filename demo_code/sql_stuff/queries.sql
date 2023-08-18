@@ -67,3 +67,43 @@ WHERE users.id = 1;
 SELECT * FROM likes
 JOIN reviews ON (likes.review_id = reviews.id)
 WHERE reviews.id = 3;
+
+----------------
+SELECT COUNT(*), name, category FROM games
+WHERE min_age = 14;
+
+SELECT AVG(cost), * FROM games;
+
+SELECT MIN(cost), * FROM games;
+
+SELECT AVG(cost) AS average_cost, min_age FROM games
+GROUP BY min_age
+HAVING min_age > 50;
+
+SELECT * FROM games
+JOIN reviews ON (games.id = reviews.game_id)
+WHERE games.name = 'Ark Nova';
+
+SELECT * FROM reviews
+WHERE game_id = (
+	SELECT id FROM games
+	WHERE games.name = 'Ark Nova'
+);
+
+SELECT * FROM reviews
+WHERE game_id IN (
+	SELECT fave_game_id FROM users
+	WHERE username = 'backend_daddy'
+);
+
+SELECT * FROM games
+WHERE id IN (
+	SELECT game_id FROM reviews
+	WHERE id IN (
+		SELECT review_id FROM likes
+		WHERE user_id = (
+			SELECT id FROM users 
+			WHERE username = 'franco_revolution'
+		)
+	)
+);
