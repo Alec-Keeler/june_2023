@@ -34,3 +34,14 @@ VALUES
 (1, 2, 1),
 (3, 2, 0),
 (2, 3, 0);
+
+-- let games = [
+	-- { name: 'Twilight Imperium', minPlayers: 3, maxPlayers: 8, category: 'Strategy', cost: 131.99, avgPlayTime: 360, minAge: 14},
+	-- { name: 'Diplomacy', minPlayers: 2, maxPlayers: 7, category: 'Strategy', cost: 29.99, avgPlayTime: 360, minAge: 12},
+	-- { name: 'Ark Nova', minPlayers: 1, maxPlayers: 4, category: 'Euro', cost: 69.95, avgPlayTime: 120, minAge: 14},
+	-- { name: 'My Little Pony: Adventures in Equestria', minPlayers: 1, maxPlayers: 4, category: 'Deck-Building cost:', cost: 37.95, avgPlayTime: 60, minAge: 14},
+	-- { name: 'Brass: Birmingham', minPlayers: 2, maxPlayers: 4, category: 'Strategy', cost: 79.95, avgPlayTime: 90, minAge: 14},
+	-- { name: 'Gloomhaven', minPlayers: 1, maxPlayers: 4, category: 'Coop', cost: 170, avgPlayTime: 90, minAge: 14},
+	-- { name: 'The Castles of Burgundy', minPlayers: 2, maxPlayers: 4, category: 'Euro', cost: 49.99, avgPlayTime: 60, minAge: 12},
+	-- { name: 'Spirit Island', minPlayers: 1, maxPlayers: 4, category: 'Coop', cost: 63.48, avgPlayTime: 105, minAge: 1}
+-- ]

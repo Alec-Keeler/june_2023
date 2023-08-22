@@ -1,0 +1,34 @@
+File Types in Sequelize
+
+Migrations
+	Create tables
+	Making any change to the structure of the DB
+	camelCase
+		table names are title case "Boardgames"
+	Table names NEED to be Capitalized and Plural
+	npx sequelize migration:generate --name create-games
+	npx dotenv sequelize db:migrate
+	npx dotenv sequelize db:migrate:undo(:all)
+
+Models
+	class representation of each table
+	contains majority of sequelize functionality
+	Models MUST be Capitalized and Singular
+	npx sequelize model:generate --name Game --attributes col1:datatype,col2:datatype
+		generates a model
+		generates a matching migration
+
+Seeders
+	Add data to a table
+	Naming conventions don't matter
+	If we are refering to a table, use the plural names
+	If we are refering to a model, use the singular name
+	npx sequelize seed:generate --name game-data
+	npx dotenv sequelize db:seed:all
+	npx dotenv sequelize db:seed:undo(:all)
+
+Reset db
+npx dotenv sequelize db:seed:undo:all
+npx dotenv sequelize db:migrate:undo:all
+npx dotenv sequelize db:migrate
+npx dotenv sequelize db:seed:all
