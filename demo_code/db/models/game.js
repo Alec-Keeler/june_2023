@@ -11,6 +11,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Game.hasMany(models.User, {
+        foreignKey: 'faveGameId', //GameId
+        onDelete: 'CASCADE',
+        hooks: true
+      })
+      // SELECT * FROM Games
+      // JOIN Users ON (Users.faveGameId = Games.id)
+
+      Game.hasMany(models.Review, {
+        foreignKey: 'gameId'
+      })
+
+      
+      
     }
   }
   Game.init({

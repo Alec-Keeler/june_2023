@@ -22,6 +22,9 @@ app.get('/puppies', async (req, res, next) => {
     let allPuppies;
 
     // Your code here
+    allPuppies = await Puppy.findAll({
+        order: [['name']]
+    })
 
     res.json(allPuppies);
 });
@@ -34,6 +37,12 @@ app.get('/puppies/chipped', async (req, res, next) => {
     let chippedPuppies;
 
     // Your code here
+    chippedPuppies = await Puppy.findAll({
+        order: [[`ageYrs`, `DESC`], [`name`]],
+        where: {
+            microchipped: 1,
+        },
+    });
 
     res.json(chippedPuppies);
 });
@@ -46,6 +55,11 @@ app.get('/puppies/name/:name', async (req, res, next) => {
     let puppyByName;
     
     // Your code here
+    const pupper = req.params.name;
+
+    puppyByName = await Puppy.findOne({
+        where: { name: pupper }
+    });
 
     res.json(puppyByName);
 })
@@ -58,6 +72,11 @@ app.get('/puppies/shepherds', async (req, res, next) => {
     let shepherds;
     
     // Your code here
+    shepherds = await Puppy.findAll({
+        // where: { breed: { [Op.like]: '%Shepherd' } },
+        where: { breed: { [Op.endsWith]: 'Shepherd' } },
+        order: [['name', 'DESC']]
+    })
 
     res.json(shepherds);
 })
@@ -70,6 +89,13 @@ app.get('/puppies/tinybabies', async (req, res, next) => {
     let tinyBabyPuppies;
     
     // Your code here
+    tinyBabyPuppies = await Puppy.findAll({
+        where: {
+            ageYrs: { [Op.lt]: 1 },
+            weightLbs: { [Op.lt]: 20 }
+        },
+        order: [['ageYrs'], ['weightLbs']]
+    });
 
     res.json(tinyBabyPuppies);
 })
@@ -82,6 +108,12 @@ app.get('/puppies/:id', async (req, res, next) => {
     let puppyById;
     
     // Your code here
+    puppyById = await Puppy.findByPk(req.params.id)
+    // puppyById = await Puppy.findOne({
+    //     where: {
+    //         id: req.params.id
+    //     }
+    // })
     
     res.json(puppyById);
 });

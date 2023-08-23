@@ -32,3 +32,30 @@ npx dotenv sequelize db:seed:undo:all
 npx dotenv sequelize db:migrate:undo:all
 npx dotenv sequelize db:migrate
 npx dotenv sequelize db:seed:all
+
+Query Methods
+	findAll
+	findOne
+	findByPk
+
+	build
+		save
+		validate
+	create
+
+	Model.update
+		requires a where
+	assign properties (objects)
+		save()
+	instance.set({col1: newValue1})
+		save()
+	instance.update()
+
+	Model.destroy
+	instance.destroy()
+
+Association methods
+	hasOne
+	hasMany
+	belongsTo
+	belongsToMany

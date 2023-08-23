@@ -11,6 +11,14 @@ const build = async () => {
     // microchipped: false
     // Your code here
 
+    const pup = Puppy.build({
+      name: 'Trudy',
+      ageYrs: 2,
+      weightLbs: 38,
+      breed: 'Brittany Spaniel',
+      microchipped: false
+    })
+    await pup.save()
 
   } catch (err) {
     throw err;
@@ -30,7 +38,13 @@ const create = async () => {
     // breed: Bulldog
     // microchipped: true
     // Your code here
-
+    await Puppy.create({
+      name: 'Beans',
+      ageYrs: 1.6,
+      weightLbs: 42,
+      breed: 'Bulldog',
+      microchipped: true
+    })
 
   } catch (err) {
     throw err;
