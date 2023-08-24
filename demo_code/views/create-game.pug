@@ -1,0 +1,30 @@
+extends layout.pug
+
+block content
+	h1 Add a game!
+	if errors.length > 0
+		each error in errors
+			p=error
+	form(action="/games/create" method="post") 
+		label(for="name") Name:
+		input(type="text" name="name" value=body.name)
+		br
+		label(for="minPlayers") Minimum Players:
+		input(type="number" name="minPlayers" value=body.minPlayers)
+		br
+		label(for="maxPlayers") Maximum Players:
+		input(type="number" name="maxPlayers" value=body.maxPlayers)
+		br
+		label(for="category") Category:
+		input(type="text" name="category" value=body.category)
+		br
+		label(for="cost") Cost:
+		input(type="number" name="cost" value=body.cost)
+		br
+		label(for="avgPlayTime") Average Play Time:
+		input(type="number" name="avgPlayTime" value=body.avgPlayTime)
+		br
+		label(for="minAge") Minimum Age:
+		input(type="number" name="minAge" value=body.minAge)
+		br
+		button Add Game

@@ -8,11 +8,12 @@ const {Game, Review, User, Like} = require('../db/models')
 // find all games. SELECT only the games' names and categories. ORDER the results by name
 router.get('/', async (req, res) => {
 	const games = await Game.findAll({
-		attributes: ['name', 'category'],
+		attributes: ['id', 'name', 'category', 'minPlayers', 'maxPlayers'],
 		order: [['name', 'DESC']]
 	}) // SELECT * FROM Games ORDER BY name;
 
-	res.json(games)
+	// res.json(games)
+	res.render('allgames.pug', {games})
 })
 
 // find a game using a name query string /games/search?name=x
@@ -34,12 +35,13 @@ router.get('/search', async (req, res) => {
 })
 
 // find a game by its primary key
-router.get('/:id', async (req, res) => {
+router.get('/:id(\\d+)', async (req, res) => {
 	const game = await Game.findByPk(req.params.id, {
-		attributes: ['name', 'maxPlayers']
+		// attributes: ['name', 'maxPlayers']
 	})
 
-	res.json(game)
+	// res.json(game)
+	res.render('agame.pug', {game})
 })
 
 // build a new instance of a Game
@@ -66,9 +68,26 @@ router.post('/build', async (req, res) => {
 	})
 })
 
+router.get('/newgame', (req, res) => {
+	res.render('create-game.pug', {errors: [], body: {}})
+})
+
 // create a new instance of a Game
-router.post('/create', async (req, res) => {
+const gameChecker = (req, res, next) => {
 	const { name, minPlayers, maxPlayers, category, cost, avgPlayTime, minAge } = req.body
+	let errors = []
+	if (!name) {
+		errors.push('Please provide a valid name')
+	}
+	req.errors = errors
+	next()
+}
+router.post('/create', gameChecker, async (req, res) => {
+	const { name, minPlayers, maxPlayers, category, cost, avgPlayTime, minAge } = req.body
+
+	if (req.errors.length > 0) {
+		return res.render('create-game.pug', {errors: req.errors, body: req.body})
+	}
 
 	const newGame = await Game.create({
 		name,

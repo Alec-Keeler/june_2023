@@ -1,0 +1,9 @@
+extends layout.pug
+
+block content
+	h2=game.name
+	p Minimum players: #{game.minPlayers}
+	p Maximum players: #{game.maxPlayers}
+	p Category: #{game.category}
+	p Cost: #{game.cost}
+	p Average Play Time: #{game.avgPlayTime}

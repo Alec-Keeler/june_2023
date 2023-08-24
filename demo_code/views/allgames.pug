@@ -1,0 +1,9 @@
+extends layout.pug
+
+block content
+	h1 All Games
+	each game in games
+		h2=game.name
+		p For #{game.minPlayers}-#{game.maxPlayers} Players
+		p Category: #{game.category}
+		a(href=`/games/${game.id}`) Game's Page
