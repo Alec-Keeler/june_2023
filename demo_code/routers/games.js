@@ -3,7 +3,7 @@ const router = express.Router()
 const { Op } = require("sequelize");
 
 // import models
-const {Game, Review, User, Like} = require('../db/models')
+const {Game, Review, User, Like, sequelize} = require('../db/models')
 
 // find all games. SELECT only the games' names and categories. ORDER the results by name
 router.get('/', async (req, res) => {
@@ -12,8 +12,8 @@ router.get('/', async (req, res) => {
 		order: [['name', 'DESC']]
 	}) // SELECT * FROM Games ORDER BY name;
 
-	// res.json(games)
-	res.render('allgames.pug', {games})
+	res.json(games)
+	// res.render('allgames.pug', {games})
 })
 
 // find a game using a name query string /games/search?name=x
@@ -149,19 +149,20 @@ router.delete('/:id', async (req, res) => {
 
 // find a game by its id and its associated reviews
 router.get('/:id/reviews', async (req, res) => {
-	// const game = await Game.findByPk(req.params.id, {
-	// 	// include: Review
-	// 	// include: [Review, User]
-	// 	include: {
-	// 		model: Review,
-	// 		attributes: ['rating', 'content'],
-	// 		include: {
-	// 			model: User,
-	// 			attributes: ['username']
-	// 		}
-	// 	},
-	// 	attributes: ['name', 'category']
-	// })
+	const game = await Game.findByPk(req.params.id, {
+		// include: Review
+		// include: [Review, User]
+		include: {
+			model: Review,
+			as: 'UserReviews'
+			// attributes: ['rating', 'content'],
+			// include: {
+			// 	model: User,
+			// 	attributes: ['username']
+			// }
+		},
+		attributes: ['name', 'category']
+	})
 
 	// const user = await User.findByPk(2, {
 	// 	include: {
@@ -179,12 +180,68 @@ router.get('/:id/reviews', async (req, res) => {
 	// 	}
 	// })
 
-	const review = await Review.findByPk(3, {
-		// include: User
-	})
-	const game = await review.getGame()
+	// const review = await Review.findByPk(3, {
+	// 	// include: User
+	// })
+	// const game = await review.getGame()
 
-	res.json({review, game})
+	res.json({game})
+})
+
+
+// create a review for a game specified by id
+router.post('/:id/reviews', async(req, res) => {
+	// await Review.create({})
+	const {rating, complexity, content, userId} = req.body
+	const game = await Game.findByPk(req.params.id)
+
+	const review = await game.createReview({
+		rating, complexity, content, userId
+	})
+
+	res.json(review)
+})
+
+// Add likes for a user specified by id for reviews indicated in req.body
+// req.body = {reviewIds: [...]}
+router.post('/:userId/addlikes', async(req, res) => {
+	const user = await User.findByPk(req.params.userId)
+
+	await user.addReviews(req.body.reviewIds)
+
+	res.json("success?")
+})
+
+
+// calculate the total number of games
+// calculate the highest cost game
+// calculate the game with the lowest average play time
+// calculate the total cost of all games
+// calculate the average cost of a game
+// find the game specified by id, and add the above aggregate 
+	// data to the game object to send in the response
+router.get('/:id/agg', async(req, res) => {
+	const totalNumGames = await Game.count()
+	// const totalNumGames = await Game.findAll().length
+
+	const highestCost = await Game.max('cost')
+
+	const lowestAvgPlayTime = await Game.min('avgPlayTime')
+
+	const totalCost = await Game.sum('cost')
+
+	const avgGameCost = totalCost / totalNumGames
+
+	const game = await Game.findByPk(req.params.id)
+	const gameObj = game.toJSON()
+	gameObj.totalGames = totalNumGames
+	gameObj.highestCost = highestCost
+	gameObj.lowestAvgPlayTime = lowestAvgPlayTime
+	gameObj.totalCost = totalCost
+	gameObj.avgGameCost = avgGameCost
+	// console.log(game)
+
+	res.json(gameObj)
 })
 
 module.exports = router;

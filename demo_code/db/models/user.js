@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
       // SELECT * FROM Users
       // JOIN Games ON (Users.faveGameId = Games.id)
       User.hasMany(models.Review, {
-        foreignKey: 'userId'
+        foreignKey: 'userId',
+        as: 'UserReviews'
       })
       // JOIN Reviews ON (Reviews.userId = Users.id)
 

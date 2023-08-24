@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
         }
       );
       Toy.hasMany(
-        models.CatToy
+        models.CatToy,
+        {foreignKey: 'toyId'}
       )
     }
   };
