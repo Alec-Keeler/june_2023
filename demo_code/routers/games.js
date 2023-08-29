@@ -6,30 +6,79 @@ const { Op } = require("sequelize");
 const {Game, Review, User, Like, sequelize} = require('../db/models')
 
 // find all games. SELECT only the games' names and categories. ORDER the results by name
+// add pagination
+	// route should take in page and size query strings
+	// if no page or size values are provided, default to 1 and 5
+	// if either page or size are provided but have values less than 1, respond with all non paginated results
+		// will need to conditionally add pagination properties to query
 router.get('/', async (req, res) => {
+	let {size, page} = req.query
+	if (!size && req.body.size) {
+		size = req.body.size
+	}
+
+	if (!size) size = 5
+	if (!page) page = 1
+	let pagination = {}
+	console.log(page, size)
+	if (size >= 1 && page >= 1) {
+		pagination.limit = size
+		pagination.offset = (page - 1) * size
+	}
 	const games = await Game.findAll({
 		attributes: ['id', 'name', 'category', 'minPlayers', 'maxPlayers'],
-		order: [['name', 'DESC']]
+		order: [['name', 'DESC']],
+		...pagination
 	}) // SELECT * FROM Games ORDER BY name;
 
-	res.json(games)
-	// res.render('allgames.pug', {games})
+	const count = await Game.count()
+	let numPages = count / size
+	if (numPages === Infinity) {
+		numPages = 0
+	}
+	
+	// res.json(games)
+	res.render('allgames.pug', {games, size, numPages})
 })
 
 // find a game using a name query string /games/search?name=x
 // incorporate the LIKE operator
+// Add additional optional search filters (query strings)
+	// name, maxCost, reviewedByUser
+	// find a game with the provided name
+	// find games with a cost less than or equal to maxCost
+	// find all games and reviews by specified user id
 router.get('/search', async (req, res) => {
-	const {name} = req.query
+	const {name, maxCost, reviewedByUser} = req.query
 
-	const game = await Game.findAll({
-		// where: {name}
+	let queryObj = {
+		where: {},
+		include: []
+	}
 
-		where: {
-			name: {
-				[Op.substring]: name
-			}
+	if (name) {
+		queryObj.where.name = {
+			[Op.substring]: name
 		}
-	}) // SELECT * FROM Games WHERE name = ?
+	}
+
+	if (maxCost) {
+		queryObj.where.cost = {
+			[Op.lte]: maxCost
+		}
+	}
+
+	if (reviewedByUser) {
+		queryObj.include.push({
+			model: Review,
+			where: {
+				userId: reviewedByUser
+			}
+		})
+	}
+
+
+	const game = await Game.findAll(queryObj) // SELECT * FROM Games WHERE name = ?
 
 	res.json(game)
 })

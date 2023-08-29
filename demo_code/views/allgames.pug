@@ -7,3 +7,17 @@ block content
 		p For #{game.minPlayers}-#{game.maxPlayers} Players
 		p Category: #{game.category}
 		a(href=`/games/${game.id}`) Game's Page
+	- var n = 0
+	ul 
+		while n < numPages
+			- var pageNum = n++ + 1
+			a(href=`/games?page=${pageNum}&size=${size}`) Page #{pageNum}
+			br
+	h3 Results per page
+	form(action="/games") 
+		select(name="size")
+			option(value=0) All
+			option(value=2) 2
+			option(value=3) 3
+			option(value=6) 6
+		button Go

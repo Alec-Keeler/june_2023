@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       Game.hasMany(models.User, {
         foreignKey: 'faveGameId', //GameId
         onDelete: 'CASCADE',
-        hooks: true
+        // hooks: true
       })
       // SELECT * FROM Games
       // JOIN Users ON (Users.faveGameId = Games.id)

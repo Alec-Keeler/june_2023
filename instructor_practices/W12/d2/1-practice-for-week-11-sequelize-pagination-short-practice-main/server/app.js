@@ -12,11 +12,35 @@ const { Musician, Band, Instrument } = require('./db/models');
 // Express using json - DO NOT MODIFY
 app.use(express.json());
 
+let paginator = (req, res, next) => {
+    let { page, size } = req.query
 
-app.get('/musicians', async (req, res, next) => {
+    if (!size) size = 5
+    if (!page) page = 1
+
+    req.pagination = {}
+    if (page >= 1 && size >= 1) {
+        req.pagination.limit = size
+        req.pagination.offset = (page - 1) * size
+    }
+
+    next()
+}
+
+app.get('/musicians', paginator, async (req, res, next) => {
     // Parse the query params, set default values, and create appropriate
     // offset and limit values if necessary.
     // Your code here
+    // let {page, size} = req.query
+
+    // if (!size) size = 5
+    // if (!page) page = 1
+
+    // let pagination = {}
+    // if (page >= 1 && size >= 1) {
+    //     pagination.limit = size
+    //     pagination.offset = (page - 1) * size
+    // }
     
     // Query for all musicians
     // Include attributes for `id`, `firstName`, and `lastName`
@@ -29,6 +53,7 @@ app.get('/musicians', async (req, res, next) => {
             model: Band,
             attributes: ['id', 'name']
         }],
+        ...req.pagination
         // add limit key-value to query
         // add offset key-value to query
         // Your code here
