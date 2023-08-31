@@ -293,4 +293,16 @@ router.get('/:id/agg', async(req, res) => {
 	res.json(gameObj)
 })
 
+// Use a scope to remove game time stamps by default
+// Use a scope to find all games with a minPlayers value of 2 or less
+// Use a scope to find the favorite game of a user identified by their name
+	// /scopes?name=XYZ
+router.get('/scopes', async(req, res) => {
+	const games = await Game.scope(['defaultScope', {
+		method: ['findFaveGame', req.query.name]
+	}]).findAll()
+
+	res.json(games)
+})
+
 module.exports = router;

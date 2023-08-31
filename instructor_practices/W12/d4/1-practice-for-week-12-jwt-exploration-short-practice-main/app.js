@@ -4,6 +4,7 @@ require('dotenv').config();
 // Import package
 
 // Your code here
+const jwt = require('jsonwebtoken');
 
 // Define variables - DO NOT MODIFY
 
@@ -11,6 +12,11 @@ require('dotenv').config();
 let token; // DO NOT MODIFY! Re-assign the token variable below.
 
 // Your code here
+token = jwt.sign({
+	email: 'alec@alec.alec',
+	username: 'backenddaddy',
+	userId: 1
+}, process.env.SECRET_KEY)
 
 // See the JWT in the console - DO NOT MODIFY
 console.log('JWT:', token);
@@ -20,6 +26,7 @@ console.log('JWT:', token);
 let payload; // DO NOT MODIFY! Re-assign the payload variable below.
 
 // Your code here
+payload = jwt.decode()
 
 // See the decoded payload in the console - DO NOT MODIFY
 console.log('Payload:', payload);
@@ -29,6 +36,7 @@ console.log('Payload:', payload);
 let verifiedPayload; // DO NOT MODIFY! Re-assign the verifiedPayload variable below.
 
 // Your code here
+verifiedPayload = jwt.sign(token, process.env.SECRET_KEY)
 
 // See the verified payload in the console - DO NOT MODIFY
 console.log('Verified Payload:', verifiedPayload);
